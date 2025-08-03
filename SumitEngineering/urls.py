@@ -21,9 +21,17 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import include
 from store.views import home  # Import the home view directly
+from trap.admin_bait import BaitAdminSite
+
+# create the bait admin instance
+bait_admin_site = BaitAdminSite(name="bait_admin")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # REAL admin (staff only)
+    path("secureadmin/", admin.site.urls),
+
+    # FAKE admin (bait)
+    path("admin/", bait_admin_site.urls),
     path('', home, name='home'),
     path('store/', include('store.urls')),
     path('cart/', include('cart.urls')),
