@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, ReviewRating
 from .models import UserMessage
 from .models import PriceInquiry
 
@@ -26,3 +26,5 @@ class PriceInquiryAdmin(admin.ModelAdmin):
     ordering = ('-created_at',)
 
 admin.site.register(PriceInquiry, PriceInquiryAdmin)
+
+admin.site.register(ReviewRating)

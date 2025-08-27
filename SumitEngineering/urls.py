@@ -26,6 +26,10 @@ from trap.admin_bait import BaitAdminSite
 # create the bait admin instance
 bait_admin_site = BaitAdminSite(name="bait_admin")
 
+admin.site.site_header = "Sumit Engineering Admin"
+admin.site.site_title = "Sumit Engineering Admin Portal"
+admin.site.index_title = "Welcome to Sumit Engineering Admin Portal"
+
 urlpatterns = [
     # REAL admin (staff only)
     path("secureadmin/", admin.site.urls),

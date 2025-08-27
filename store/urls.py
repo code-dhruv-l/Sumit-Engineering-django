@@ -9,4 +9,5 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('submit-message/', views.submit_message, name='submit_message'),
     path('submit-price-inquiry/', views.submit_price_inquiry, name='submit_price_inquiry'),
+    path('submit_review/<int:product_id>/', views.submit_review, name='submit_review'),
 ]

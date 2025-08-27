@@ -25,7 +25,7 @@
                     <div class="col-md-4 mb-5" id="footer-form">
                         {% include 'includes/alerts.html' %}
                         <h5 class="font-weight-bold text-dark mb-4">Any Message ...!</h5>
-                        <form action="{% url 'submit_message' %}#footer-form" method="POST">
+                        <form action="{% url 'submit_message' %}" method="POST">
                             {% csrf_token %}
                             <div class="form-group">
                                 <input type="text" name="name" class="form-control border-0 py-4" placeholder="Your Name" required />

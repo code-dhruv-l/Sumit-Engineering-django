@@ -11,6 +11,8 @@ from django.contrib import messages
 from .models import UserMessage  # Assuming you have a UserMessage model
 from django.shortcuts import redirect
 from .models import PriceInquiry  # Assuming you have a PriceInquiry model
+from .models import ReviewRating  # Assuming you have a ReviewRating model
+from .forms import ReviewForm  # Assuming you have a ReviewForm defined in forms.py
 
 
 # Create your views here.
@@ -83,9 +85,14 @@ def product_detail(request, category_slug, product_slug):
     except Exception as e:
         raise e
 
+    #get the reviews for the product 
+    reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
+
+
     context = {
         'single_product': single_product,
         'in_cart': in_cart,
+        'reviews': reviews,  
     }       
     return render(request, 'store/product_detail.html', context)  # Adjust the template path as necessary
 
@@ -164,3 +171,31 @@ def submit_price_inquiry(request):
             messages.error(request, "Please fill all fields.")
 
         return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def submit_review(request, product_id):
+    url = request.META.get('HTTP_REFERER', '/')
+    if request.method == 'POST':
+        try:
+            reviews = ReviewRating.objects.get(user__id=request.user.id, product__id=product_id)
+            form = ReviewForm(request.POST, instance=reviews)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your review has been updated successfully.")
+            else:
+                messages.error(request, "Review update failed. Please check your input.")
+            return redirect(url)
+        except ReviewRating.DoesNotExist:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = form.save(commit=False)
+                data.ip = request.META.get('REMOTE_ADDR')
+                data.product_id = product_id
+                data.user_id = request.user.id
+                data.save()
+                messages.success(request, "Your review has been submitted successfully.")
+            else:
+                messages.error(request, "Review submission failed. Please check your input.")
+            return redirect(url)
+
+    
