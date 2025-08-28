@@ -35,7 +35,7 @@ urlpatterns = [
     path("secureadmin/", admin.site.urls),
 
     # FAKE admin (bait)
-    path("admin/", bait_admin_site.urls),
+    path("dj-admin/", bait_admin_site.urls),
     path('', home, name='home'),
     path('store/', include('store.urls')),
     path('cart/', include('cart.urls')),
@@ -43,4 +43,6 @@ urlpatterns = [
 
     #Orders
     path('orders/', include('orders.urls')),
+
+    path('customadmin/', include('customadmin.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
